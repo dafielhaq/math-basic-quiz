@@ -119,7 +119,7 @@ Arti istilah:
 
 ### Kalau waktu di bawah 200 baris per jam
 
-Aplikasi hanya mengizinkan 200 baris masuk per jam. Kalau lebih, sisanya **tidak hilang**: tetap disimpan di HP dan dikirim lagi saat aplikasi dibuka berikutnya. Satu tes diagnostik itu 48 baris, jadi batas ini jarang terasa. Ubah angkanya di baris `ROWS_PER_HOUR` di script kalau perlu.
+Aplikasi hanya mengizinkan 200 baris masuk per jam. Kalau lebih, sisanya **tidak hilang**: tetap disimpan di HP dan dikirim lagi saat aplikasi dibuka berikutnya. Satu tes diagnostik itu 24 baris, jadi batas ini jarang terasa. Ubah angkanya di baris `ROWS_PER_HOUR` di script kalau perlu.
 
 ---
 

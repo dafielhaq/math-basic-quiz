@@ -41,7 +41,7 @@ for (const t of ['direct', 'meaning', 'first_step', 'find_mistake']) {
 // ---- practice starts with the weak topics ----
 {
   const history = [{
-    id: 'x', mode: 'diagnostic', startedAt: 1, endedAt: 2, total: 48, correct: 10, accuracy: 21, avgMs: 5000,
+    id: 'x', mode: 'diagnostic', startedAt: 1, endedAt: 2, total: TOPICS.length * CONFIG.QUESTIONS_PER_TOPIC, correct: 10, accuracy: 21, avgMs: 5000,
     topics: {
       5: { name: 'Bilangan negatif', correct: 0, total: 2, ms: 1000, slow: false, status: 'lemah' },
       12: { name: 'Menyederhanakan pecahan', correct: 0, total: 2, ms: 1000, slow: false, status: 'lemah' },

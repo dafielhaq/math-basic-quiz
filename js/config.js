@@ -16,7 +16,7 @@ export const CONFIG = {
   GUESS_MS: 2000,      // answer faster than this is flagged as possibly a guess
   TOO_LONG_MS: 30000,  // answer slower than this is flagged as suspiciously slow
 
-  QUESTIONS_PER_TOPIC: 2,   // diagnostic mode: 2 questions per topic (24 topics = 48)
+  QUESTIONS_PER_TOPIC: 1,   // diagnostic mode: 1 question per topic (24 topics = 24)
   PRACTICE_LENGTH: 10,      // practice mode: questions per session
   NON_DIRECT_SHARE: 0.2,    // at least this share of questions is not a plain calculation
 

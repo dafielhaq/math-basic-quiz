@@ -2,7 +2,7 @@
 // Service worker: makes the app work without internet.
 // Bump VERSION when you upload a new version of the app, so phones pick it up.
 
-const VERSION = 'v6';
+const VERSION = 'v7';
 const CACHE = `mq-${VERSION}`;
 
 const FILES = [

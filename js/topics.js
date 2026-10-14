@@ -86,7 +86,7 @@ const T1 = {
 const T2 = {
   id: 2, name: 'Pembagian dasar', kind: 'mental',
   gen() {
-    const b = ri(2, 9), q = ri(2, 10), n = b * q;
+    const b = ri(2, 9), q = ri(2, 9), n = b * q;
     return base(`${n} : ${b} = ?`, q, [
       d(q + 1, 'table_neighbor'),
       d(q - 1, 'table_neighbor'),
@@ -99,16 +99,16 @@ const T3 = {
   id: 3, name: 'Tambah dan kurang dua angka', kind: 'mental',
   gen() {
     if (Math.random() < 0.5) {
-      const a = ri(14, 68), b = ri(13, 79);
+      const a = ri(11, 49), b = ri(11, 49);
       const ans = a + b;
       return base(`${a} + ${b} = ?`, ans, [
         d(ans + 10, 'place_value_error'),
         d(ans - 1, 'off_by_one'),
         d(swapDigits(ans), 'digit_swap'),
       ], `Puluhan: ${Math.floor(a / 10)} + ${Math.floor(b / 10)} = ${Math.floor(a / 10) + Math.floor(b / 10)}. ` +
-         `Satuan: ${a % 10} + ${b % 10} = ${a % 10 + b % 10}. Hasilnya ${ans}.`, ans > 100 ? 3 : 2);
+         `Satuan: ${a % 10} + ${b % 10} = ${a % 10 + b % 10}. Hasilnya ${ans}.`, ans > 80 ? 3 : 2);
     }
-    const a = ri(42, 99), b = ri(13, a - 11);
+    const a = ri(30, 69), b = ri(11, 29);
     const ans = a - b;
     return base(`${a} - ${b} = ?`, ans, [
       d(ans + 10, 'place_value_error'),
@@ -122,7 +122,7 @@ const T4 = {
   id: 4, name: 'Kali 10, 100, 1000', kind: 'mental',
   gen() {
     const k = pick([10, 100, 1000]);
-    const a = ri(3, 99);
+    const a = ri(2, 15);
     const ans = a * k;
     const zeros = String(k).length - 1;
     return base(`${a} x ${k} = ?`, ans, [
@@ -138,7 +138,7 @@ const T5 = {
   id: 5, name: 'Bilangan negatif', kind: 'mental',
   gen() {
     const form = pick(['a', 'b', 'c']);
-    const a = ri(2, 12), b = ri(2, 15);
+    const a = ri(2, 9), b = ri(2, 9);
     if (form === 'a') {
       const ans = -a + b;
       return base(`-${a} + ${b} = ?`, ans, [
@@ -170,7 +170,7 @@ const T6 = {
   gen() {
     const form = pick([1, 2, 3]);
     if (form === 1) {
-      const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+      const a = ri(2, 9), b = ri(2, 5), c = ri(2, 5);
       const ans = a + b * c;
       return base(`${a} + ${b} x ${c} = ?`, ans, [
         d((a + b) * c, 'order_ops'),
@@ -179,7 +179,7 @@ const T6 = {
       ], `Kali dulu: ${b} x ${c} = ${b * c}. Lalu ${a} + ${b * c} = ${ans}.`, 2);
     }
     if (form === 2) {
-      const b = ri(3, 9), c = ri(3, 9), a = ri(2, Math.max(2, b * c - 1));
+      const b = ri(2, 6), c = ri(2, 6), a = ri(2, Math.max(2, b * c - 1));
       const ans = b * c - a;
       return base(`${b} x ${c} - ${a} = ?`, ans, [
         d(b * (c - a), 'order_ops'),
@@ -187,7 +187,7 @@ const T6 = {
         d(ans - 1, 'off_by_one'),
       ], `Kali dulu: ${b} x ${c} = ${b * c}. Lalu ${b * c} - ${a} = ${ans}.`, 2);
     }
-    const k = ri(2, 6), q = ri(2, 8), b2 = k * q, a2 = ri(2, 8) * k;
+    const k = ri(2, 5), q = ri(2, 5), b2 = k * q, a2 = ri(2, 5) * k;
     const ans = a2 + q;
     return base(`${a2} + ${b2} : ${k} = ?`, ans, [
       d((a2 + b2) / k, 'order_ops'),
@@ -201,7 +201,7 @@ const T7 = {
   id: 7, name: 'Tanda kurung', kind: 'reason',
   gen() {
     if (Math.random() < 0.5) {
-      const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+      const a = ri(2, 9), b = ri(2, 6), c = ri(2, 5);
       const ans = (a + b) * c;
       return base(`(${a} + ${b}) x ${c} = ?`, ans, [
         d(a + b * c, 'bracket_ignored'),
@@ -209,7 +209,7 @@ const T7 = {
         d(ans - c, 'off_by_one'),
       ], `Isi kurung dulu: ${a} + ${b} = ${a + b}. Lalu ${a + b} x ${c} = ${ans}.`, 2);
     }
-    const a = ri(2, 9), c = ri(2, 9), b = ri(c + 1, c + 9);
+    const a = ri(2, 6), c = ri(2, 5), b = ri(c + 1, c + 5);
     const ans = a * (b - c);
     return base(`${a} x (${b} - ${c}) = ?`, ans, [
       d(a * b - c, 'bracket_ignored'),
@@ -224,16 +224,16 @@ const T8 = {
   gen() {
     const form = pick([1, 2, 3]);
     if (form === 1) {
-      const a = ri(3, 12);
+      const a = ri(3, 9);
       const ans = a * a;
       return base(`${a}${SUP[2]} = ?`, ans, [
         d(a * 2, 'exponent_base_error'),
         d((a - 1) * (a - 1), 'off_by_one'),
         d(ans + a, 'off_by_one'),
-      ], `${a}${SUP[2]} artinya ${a} x ${a} = ${ans}.`, a > 8 ? 3 : 2);
+      ], `${a}${SUP[2]} artinya ${a} x ${a} = ${ans}.`, a > 7 ? 3 : 2);
     }
     if (form === 2) {
-      const a = ri(2, 5);
+      const a = ri(2, 4);
       const ans = a * a * a;
       return base(`${a}${SUP[3]} = ?`, ans, [
         d(a * 3, 'exponent_base_error'),
@@ -241,7 +241,7 @@ const T8 = {
         d(ans + a * a, 'off_by_one'),
       ], `${a}${SUP[3]} artinya ${a} x ${a} x ${a} = ${ans}.`, 3);
     }
-    const a = ri(2, 8), b = ri(2, 12);
+    const a = ri(2, 6), b = ri(2, 9);
     const ans = a * a + b;
     return base(`${a}${SUP[2]} + ${b} = ?`, ans, [
       d(a * 2 + b, 'exponent_base_error'),
@@ -254,13 +254,13 @@ const T8 = {
 const T9 = {
   id: 9, name: 'Akar kuadrat', kind: 'mental',
   gen() {
-    const a = ri(3, 15);
+    const a = ri(3, 12);
     const n = a * a;
     return base(`\u221a${n} = ?`, a, [
       d(a * 2, 'sqrt_confusion'),
       d(n, 'forgot_root'),
       d(a + 1, 'off_by_one'),
-    ], `\u221a${n} = ${a}, karena ${a} x ${a} = ${n}.`, a > 10 ? 3 : 2);
+    ], `\u221a${n} = ${a}, karena ${a} x ${a} = ${n}.`, a > 9 ? 3 : 2);
   },
 };
 
@@ -270,7 +270,7 @@ const T10 = {
   id: 10, name: 'Pecahan sederhana', kind: 'mental',
   gen() {
     if (Math.random() < 0.5) {
-      const den = ri(4, 10);
+      const den = ri(4, 8);
       const x = ri(1, den - 2);
       const y = ri(1, den - x - 1);
       const s = simplify(x + y, den);
@@ -299,7 +299,7 @@ const T11 = {
   gen() {
     const den = pick([2, 3, 4, 5, 10]);
     const num = ri(1, den - 1);
-    const k = ri(2, 12);
+    const k = ri(2, 8);
     const total = den * k;
     const ans = num * k;
     return base(`${num}/${den} dari ${total} = ?`, ans, [
@@ -314,7 +314,7 @@ const T12 = {
   id: 12, name: 'Menyederhanakan pecahan', kind: 'mental',
   gen() {
     const pair = pick([[1, 2], [2, 3], [3, 4], [1, 3], [2, 5], [3, 5], [4, 5], [1, 4], [5, 6], [3, 7]]);
-    const k = ri(2, 7);
+    const k = ri(2, 5);
     const n = pair[0] * k, den = pair[1] * k;
     const ans = frac(pair[0], pair[1]);
     const wrongs = [
@@ -325,7 +325,7 @@ const T12 = {
     // dividing both sides by 2 is the same value, so it can never be a wrong option
     return base(`Sederhanakan ${n}/${den}`, ans, wrongs,
       `Bagi atas dan bawah dengan angka yang sama. ${n} : ${k} = ${pair[0]} dan ${den} : ${k} = ${pair[1]}. ` +
-      `Hasilnya ${ans}.`, k > 5 ? 3 : 2);
+      `Hasilnya ${ans}.`, k > 4 ? 3 : 2);
   },
 };
 
@@ -334,7 +334,7 @@ const T13 = {
   gen() {
     const form = pick([1, 2, 3]);
     if (form === 1) {
-      const den = pick([2, 4, 5, 10, 20, 25, 50]);
+      const den = pick([2, 4, 5, 10, 20]);
       const num = ri(1, den - 1);
       const pct = (num * 100) / den;
       return base(`${num}/${den} = ? %`, `${pct}%`, [
@@ -345,7 +345,7 @@ const T13 = {
          `Berarti ${pct}%.`, 2);
     }
     if (form === 2) {
-      const pct = pick([12, 25, 36, 45, 58, 74, 8]);
+      const pct = pick([10, 20, 25, 40, 50, 75]);
       const dec = pct / 100;
       return base(`${fmt(dec)} = ? %`, `${pct}%`, [
         d(`${fmt(pct / 10)}%`, 'percent_off_by_one'),
@@ -369,7 +369,7 @@ const T14 = {
     const p = pick([5, 10, 15, 20, 25, 30, 50, 75]);
     let n = 0, ans = 0;
     for (let i = 0; i < 60; i++) {
-      n = ri(2, 24) * 5;
+      n = ri(2, 20) * 5;
       const v = (n * p) / 100;
       if (isInt(v) && v >= 1) { ans = v; break; }
     }
@@ -389,7 +389,7 @@ const T15 = {
   id: 15, name: 'Desimal', kind: 'mental',
   gen() {
     if (Math.random() < 0.5) {
-      const A = ri(11, 99), B = ri(105, 995);      // tenths and hundredths
+      const A = ri(11, 39), B = ri(105, 395);      // tenths and hundredths
       const ans = (A * 10 + B) / 100;
       return base(`${fmt(A / 10)} + ${fmt(B / 100)} = ?`, fmt(ans), [
         d(fmt((A + B) / 100), 'decimal_place'),
@@ -397,7 +397,7 @@ const T15 = {
         d(fmt(ans / 10), 'decimal_place'),
       ], `Sejajarkan komanya dulu. ${fmt(A / 10)} + ${fmt(B / 100)} = ${fmt(ans)}.`, 2);
     }
-    const A = ri(30, 99), B = ri(105, A * 10 - 5);
+    const A = ri(20, 49), B = ri(105, A * 10 - 5);
     const ans = (A * 10 - B) / 100;
     return base(`${fmt(A / 10)} - ${fmt(B / 100)} = ?`, fmt(ans), [
       d(fmt((A - B) / 100), 'decimal_place'),
@@ -412,7 +412,7 @@ const T16 = {
   gen() {
     const form = pick([1, 2, 3]);
     if (form === 1) {
-      const w = ri(2, 40), t = ri(1, 9), h = ri(1, 9);
+      const w = ri(2, 20), t = ri(1, 9), h = ri(1, 9);
       const x = w + t / 10 + h / 100;
       const up = w + (t + 1) / 10;
       const down = w + t / 10;
@@ -426,7 +426,7 @@ const T16 = {
          `Hasilnya ${fmt(ans)}.`, 3);
     }
     if (form === 2) {
-      const a = ri(31, 69), b = ri(11, 29);
+      const a = ri(21, 49), b = ri(11, 19);
       const a10 = Math.round(a / 10) * 10, b10 = Math.round(b / 10) * 10;
       const ans = a10 * b10;
       return base(`Taksiran dari ${a} x ${b} \u2248 ?`, ans, [
@@ -435,7 +435,7 @@ const T16 = {
         d(a10 * b, 'partial_rounding'),
       ], `Bulatkan dulu: ${a} \u2248 ${a10} dan ${b} \u2248 ${b10}. Lalu ${a10} x ${b10} = ${ans}.`, 3);
     }
-    const n = ri(105, 989);
+    const n = ri(21, 149);
     const tens = Math.round(n / 10) * 10;
     return base(`Bulatkan ${n} ke puluhan terdekat`, tens, [
       d(Math.round(n / 100) * 100, 'wrong_place'),
@@ -452,7 +452,7 @@ const T17 = {
   gen() {
     const form = pick(['genap', 'ganjil', 'faktor', 'kelipatan']);
     if (form === 'genap' || form === 'ganjil') {
-      const good = form === 'genap' ? 2 * ri(6, 60) : 2 * ri(6, 60) + 1;
+      const good = form === 'genap' ? 2 * ri(6, 40) : 2 * ri(6, 40) + 1;
       // the three wrong options are the other kind of number
       return base(`Bilangan ${form} adalah`, good, [
         d(good + 1, 'parity_error'),
@@ -462,7 +462,7 @@ const T17 = {
          `Yang benar ${good}.`, 1);
     }
     if (form === 'faktor') {
-      const n = pick([12, 18, 20, 24, 30, 36, 40, 48, 60]);
+      const n = pick([12, 18, 20, 24, 30, 36]);
       const divisors = [];
       for (let i = 2; i <= n / 2; i++) if (n % i === 0) divisors.push(i);
       const good = pick(divisors);
@@ -474,7 +474,7 @@ const T17 = {
         `Faktor adalah angka yang membagi habis. ${n} : ${good} = ${n / good} (bulat). Yang benar ${good}.`, 2);
     }
     const k = ri(3, 9);
-    const good = k * ri(3, 12);
+    const good = k * ri(2, 9);
     return base(`Kelipatan ${k} adalah`, good, [
       d(good + 1, 'factor_multiple_confusion'),
       d(good + 2, 'factor_multiple_confusion'),
@@ -486,8 +486,8 @@ const T17 = {
 const T18 = {
   id: 18, name: 'Bilangan prima', kind: 'reason',
   gen() {
-    const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53];
-    const odds = [9, 15, 21, 25, 27, 33, 35, 39, 49, 51, 55, 57, 63, 65, 77, 87, 91];
+    const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31];
+    const odds = [9, 15, 21, 25, 27, 33, 35, 39, 49];
     if (Math.random() < 0.5) {
       const good = pick(primes.filter((p) => p > 5));
       const wrongs = sample(odds, 2).map((v) => d(v, 'prime_rule_error'));
@@ -506,7 +506,7 @@ const T19 = {
   gen() {
     const form = pick([1, 2, 3]);
     if (form === 1) {
-      let a = -ri(2, 20), b = -ri(2, 20);
+      let a = -ri(2, 10), b = -ri(2, 10);
       if (a === b) b = -a - 1;
       const ans = Math.min(a, b);
       return base(`Mana yang lebih kecil: ${a} atau ${b}?`, ans, [
@@ -521,7 +521,7 @@ const T19 = {
         d(P[0] === P[2] ? P[1] : P[0], 'decimal_place'),
       ], `Samakan jumlah angka di belakang koma: ${P[0]} dan ${P[1]}. Yang lebih besar ${P[2]}.`, 3);
     }
-    const nums = shuffle([-ri(1, 9), ri(1, 9), -(ri(2, 9)) * 10, ri(2, 9) * 10]).slice(0, 4);
+    const nums = shuffle([-ri(1, 5), ri(1, 5), -(ri(2, 5)) * 10, ri(2, 5) * 10]).slice(0, 4);
     const sorted = nums.slice().sort((p, q) => p - q);
     const correct = sorted.join(', ');
     const wrongs = [];
@@ -556,14 +556,14 @@ const T20 = {
       ], `Bagian yang hilang = ${sum} - ${sum - ans} = ${ans}. Cek: ${sum} - ${ans} = ${sum - ans}.`, 2);
     }
     if (form === 'mul') {
-      const ans = ri(3, 12), prod = a * ans;
+      const ans = ri(3, 9), prod = a * ans;
       return base(`? x ${a} = ${prod}`, ans, [
         d(prod + a, 'wrong_inverse_op'),
         d(prod - a, 'wrong_inverse_op'),
         d(ans + 1, 'off_by_one'),
       ], `Bagian yang hilang = ${prod} : ${a} = ${ans}. Cek: ${ans} x ${a} = ${prod}.`, 2);
     }
-    const ans = ri(3, 12), q = ri(2, 9), prod = ans * q;
+    const ans = ri(3, 9), q = ri(2, 9), prod = ans * q;
     return base(`? : ${q} = ${ans}`, prod, [
       d(ans + q, 'wrong_inverse_op'),
       d(ans - q, 'wrong_inverse_op'),
@@ -576,10 +576,10 @@ const T21 = {
   id: 21, name: 'Perbandingan sederhana', kind: 'mental',
   gen() {
     if (Math.random() < 0.5) {
-      const r1 = ri(2, 6);
-      let r2 = ri(2, 6);
-      if (r2 === r1) r2 = r1 === 6 ? 5 : r1 + 1;
-      const k = ri(2, 9);
+      const r1 = ri(2, 5);
+      let r2 = ri(2, 5);
+      if (r2 === r1) r2 = r1 === 5 ? 4 : r1 + 1;
+      const k = ri(2, 6);
       const a = r1 * k, ans = r2 * k;
       return base(`Perbandingan ${r1} : ${r2}. Kalau bagian pertama ${a}, berapa bagian kedua?`, ans, [
         d(a + r2, 'ratio_add'),
@@ -590,7 +590,7 @@ const T21 = {
     const r1 = ri(2, 5);
     let r2 = pick([2, 3, 5, 7].filter((v) => v !== r1));
     while (r2 % r1 === 0 || r1 % r2 === 0) r2 = r2 + 1;   // keep the ratio fully reduced
-    const k = ri(2, 7);
+    const k = ri(2, 5);
     const ans = `${r1} : ${r2}`;
     return base(`Sederhanakan ${r1 * k} : ${r2 * k}`, ans, [
       d(`${r2} : ${r1}`, 'ratio_flip'),
@@ -608,7 +608,7 @@ const T22 = {
       ['jam', 'menit', 60], ['liter', 'ml', 1000], ['menit', 'detik', 60],
     ];
     const U = pick(units);
-    const a = ri(2, 12);
+    const a = ri(2, 6);
     const ans = a * U[2];
     return base(`${a} ${U[0]} = ? ${U[1]}`, ans, [
       d(ans / 10, 'conversion_wrong'),
@@ -621,10 +621,10 @@ const T22 = {
 const T23 = {
   id: 23, name: 'Substitusi', kind: 'reason',
   gen() {
-    const x = ri(2, 9);
-    const coef = pick([2, 3, 4, 5]);
+    const x = ri(2, 6);
+    const coef = pick([2, 3, 4]);
     const form = pick([1, 2]);
-    const cst = pick([1, 2, 3, 5, 7]);
+    const cst = pick([1, 2, 3, 5]);
     if (form === 1) {
       const ans = coef * x + cst;
       return base(`Kalau x = ${x}, berapa nilai ${coef}x + ${cst}?`, ans, [
@@ -649,7 +649,7 @@ const T24 = {
   gen() {
     const form = pick(['area_rect', 'perimeter_rect', 'area_triangle', 'area_square']);
     if (form === 'area_rect') {
-      const p = ri(4, 15), l = ri(3, 12);
+      const p = ri(4, 12), l = ri(3, 9);
       const ans = p * l;
       return base(`Persegi panjang dengan panjang ${p} cm dan lebar ${l} cm. Berapa luasnya?`, ans, [
         d(2 * (p + l), 'perimeter_confusion'),
@@ -658,7 +658,7 @@ const T24 = {
       ], `Luas persegi panjang = panjang x lebar = ${p} x ${l} = ${ans} cm${SUP[2]}.`, 2);
     }
     if (form === 'perimeter_rect') {
-      const p = ri(4, 15), l = ri(3, 12);
+      const p = ri(4, 12), l = ri(3, 9);
       const ans = 2 * (p + l);
       return base(`Persegi panjang dengan panjang ${p} cm dan lebar ${l} cm. Berapa kelilingnya?`, ans, [
         d(p * l, 'formula_swap'),
@@ -667,7 +667,7 @@ const T24 = {
       ], `Keliling persegi panjang = 2 x (panjang + lebar) = 2 x (${p} + ${l}) = ${ans} cm.`, 2);
     }
     if (form === 'area_triangle') {
-      const t = ri(3, 12), a = ri(2, 10) * 2;
+      const t = ri(3, 9), a = ri(2, 6) * 2;
       const ans = (a * t) / 2;
       return base(`Segitiga dengan alas ${a} cm dan tinggi ${t} cm. Berapa luasnya?`, ans, [
         d(a * t, 'forgot_half'),
@@ -675,7 +675,7 @@ const T24 = {
         d(a * t * 2, 'multiplied_instead_of_divided'),
       ], `Luas segitiga = alas x tinggi : 2 = ${a} x ${t} : 2 = ${a * t} : 2 = ${ans} cm${SUP[2]}.`, 3);
     }
-    const s = ri(3, 15);
+    const s = ri(3, 10);
     const ans = s * s;
     return base(`Persegi dengan sisi ${s} cm. Berapa luasnya?`, ans, [
       d(4 * s, 'perimeter_confusion'),
@@ -691,148 +691,148 @@ const W = (value, tag) => [value, tag];
 
 const MEANING = {
   1: {
-    text: 'Apa arti dari 7 x 4?',
-    correct: '4 dijumlahkan sebanyak 7 kali',
+    text: 'Apa arti 7 x 4?',
+    correct: '4 dijumlah 7 kali',
     wrong: [W('7 ditambah 4', 'sum_error'), W('74', 'digit_concat'), W('7 dibagi 4', 'wrong_operation')],
-    why: '7 x 4 berarti 4 + 4 + 4 + 4 + 4 + 4 + 4 = 28.',
+    why: '7 x 4 artinya 4 + 4 + 4 + 4 + 4 + 4 + 4 = 28.',
   },
   2: {
-    text: 'Apa arti dari 20 : 4 = 5?',
-    correct: '20 dibagi menjadi 4 bagian sama besar, setiap bagian 5',
-    wrong: [W('20 dikurangi 4 sebanyak 5 kali', 'subtract_instead_divide'), W('20 dikali 4', 'wrong_operation'), W('5 dibagi 4', 'wrong_operation')],
-    why: 'Tanda : berarti membagi. 20 : 4 = 5, karena 4 x 5 = 20.',
+    text: 'Apa arti 20 : 4 = 5?',
+    correct: '20 dibagi jadi 4 bagian sama besar',
+    wrong: [W('20 dikurangi 4 lima kali', 'subtract_instead_divide'), W('20 dikali 4', 'wrong_operation'), W('5 dibagi 4', 'wrong_operation')],
+    why: 'Tanda : artinya membagi. 20 : 4 = 5 karena 4 x 5 = 20.',
   },
   3: {
-    text: 'Pada bilangan 47, apa arti angka 4 dan 7?',
-    correct: '4 puluhan dan 7 satuan',
-    wrong: [W('4 satuan dan 7 puluhan', 'place_value_error'), W('4 ratusan dan 7 puluhan', 'place_value_error'), W('4 puluhan dan 7 ratusan', 'place_value_error')],
+    text: 'Pada 47, angka 4 dan 7 artinya apa?',
+    correct: '4 puluhan, 7 satuan',
+    wrong: [W('4 satuan, 7 puluhan', 'place_value_error'), W('4 ratusan, 7 puluhan', 'place_value_error'), W('4 puluhan, 7 ratusan', 'place_value_error')],
     why: 'Angka paling kanan adalah satuan. Jadi 47 = 4 puluhan + 7 satuan.',
   },
   4: {
-    text: 'Apa yang terjadi pada bilangan 47 kalau dikali 100?',
-    correct: 'ditambah dua angka nol di belakang, jadi 4700',
-    wrong: [W('ditambah satu angka nol, jadi 470', 'decimal_shift'), W('koma digeser ke kiri', 'decimal_shift'), W('dikali 10 lalu ditambah 100', 'wrong_operation')],
+    text: '47 dikali 100 hasilnya?',
+    correct: '4700',
+    wrong: [W('470', 'decimal_shift'), W('4,7', 'decimal_shift'), W('47000', 'wrong_operation')],
     why: 'Kali 100 sama dengan menambah dua nol. 47 x 100 = 4700.',
   },
   5: {
-    text: 'Apa arti dari -5?',
-    correct: '5 langkah ke kiri dari nol',
-    wrong: [W('5 langkah ke kanan dari nol', 'sign_error'), W('sama dengan 5', 'sign_error'), W('lebih besar dari 0', 'sign_error')],
-    why: 'Tanda minus berarti ke kiri dari nol. Jadi -5 ada di sebelah kiri 0.',
+    text: 'Apa arti -5?',
+    correct: '5 langkah ke kiri dari 0',
+    wrong: [W('5 langkah ke kanan dari 0', 'sign_error'), W('sama dengan 5', 'sign_error'), W('lebih besar dari 0', 'sign_error')],
+    why: 'Tanda minus artinya ke kiri dari nol. Jadi -5 ada di kiri 0.',
   },
   6: {
-    text: 'Pada soal 3 + 4 x 2, mana yang dikerjakan lebih dulu?',
+    text: 'Pada 3 + 4 x 2, mana yang dulu?',
     correct: '4 x 2',
-    wrong: [W('3 + 4', 'order_ops'), W('dari kiri ke kanan', 'order_ops'), W('angka yang paling besar', 'order_ops')],
-    why: 'Kali dan bagi dikerjakan sebelum tambah dan kurang. 3 + 8 = 11.',
+    wrong: [W('3 + 4', 'order_ops'), W('dari kiri ke kanan', 'order_ops'), W('angka paling besar', 'order_ops')],
+    why: 'Kali dikerjakan sebelum tambah. 3 + 8 = 11.',
   },
   7: {
-    text: 'Apa gunanya tanda kurung dalam hitungan?',
-    correct: 'menentukan bagian yang dihitung lebih dulu',
-    wrong: [W('menandai jawaban akhir', 'bracket_ignored'), W('membuat angka menjadi besar', 'bracket_ignored'), W('tidak berpengaruh', 'bracket_ignored')],
-    why: 'Isi kurung selalu dihitung lebih dulu. (3 + 4) x 2 = 14, bukan 11.',
+    text: 'Tanda kurung dipakai untuk apa?',
+    correct: 'bagian yang dihitung lebih dulu',
+    wrong: [W('menandai jawaban akhir', 'bracket_ignored'), W('membuat angka jadi besar', 'bracket_ignored'), W('tidak berpengaruh', 'bracket_ignored')],
+    why: 'Isi kurung dihitung lebih dulu. (3 + 4) x 2 = 14, bukan 11.',
   },
   8: {
-    text: 'Apa arti dari 3\u00b2?',
+    text: 'Apa arti 3\u00b2?',
     correct: '3 x 3',
     wrong: [W('3 x 2', 'exponent_base_error'), W('3 + 2', 'exponent_base_error'), W('3 x 3 x 3', 'exponent_base_error')],
-    why: 'Pangkat dua berarti dikali dirinya sendiri. 3\u00b2 = 3 x 3 = 9.',
+    why: 'Pangkat dua artinya dikali dirinya sendiri. 3\u00b2 = 3 x 3 = 9.',
   },
   9: {
-    text: 'Apa arti dari \u221a49?',
-    correct: 'bilangan yang kalau dikali dirinya sendiri hasilnya 49',
+    text: 'Apa arti \u221a49?',
+    correct: 'angka yang dikali dirinya jadi 49',
     wrong: [W('49 dibagi 2', 'sqrt_confusion'), W('49 dikali 49', 'sqrt_confusion'), W('49 dikurangi 7', 'sqrt_confusion')],
-    why: '\u221a49 = 7, karena 7 x 7 = 49.',
+    why: '\u221a49 = 7 karena 7 x 7 = 49.',
   },
   10: {
-    text: 'Apa arti dari pecahan 3/4?',
-    correct: '3 bagian dari 4 bagian yang sama besar',
+    text: 'Apa arti 3/4?',
+    correct: '3 bagian dari 4 bagian sama besar',
     wrong: [W('3 ditambah 4', 'fraction_add_wrong'), W('4 bagian dari 3 bagian', 'fraction_flip'), W('3 dikali 4', 'fraction_mul_wrong')],
-    why: 'Angka bawah (penyebut) menunjukkan jumlah bagian, angka atas (pembilang) menunjukkan yang diambil.',
+    why: 'Angka bawah menunjukkan jumlah bagian, angka atas yang diambil.',
   },
   11: {
-    text: 'Apa arti dari 3/4 dari 20?',
-    correct: '20 dibagi 4 dulu, lalu dikali 3',
-    wrong: [W('20 dikali 4 dulu, lalu dibagi 3', 'invert_fraction'), W('20 dibagi 3 dulu, lalu dikali 4', 'invert_fraction'), W('20 dikurangi 3', 'subtract_instead')],
-    why: 'Bagi dengan penyebut dulu (20 : 4 = 5), lalu kali dengan pembilang (5 x 3 = 15).',
+    text: 'Apa arti 3/4 dari 20?',
+    correct: '20 bagi 4 dulu, lalu kali 3',
+    wrong: [W('20 kali 4 dulu, lalu bagi 3', 'invert_fraction'), W('20 bagi 3 dulu, lalu kali 4', 'invert_fraction'), W('20 dikurangi 3', 'subtract_instead')],
+    why: 'Bagi penyebut dulu (20 : 4 = 5), lalu kali pembilang (5 x 3 = 15).',
   },
   12: {
-    text: 'Apa arti menyederhanakan pecahan 12/18?',
-    correct: 'membagi atas dan bawah dengan angka yang sama, sampai paling sederhana',
-    wrong: [W('mengurangi atas dan bawah dengan angka yang sama', 'subtract_instead_divide'), W('membagi hanya angka atasnya', 'simplify_one_side'), W('membalik atas dan bawah', 'fraction_flip')],
-    why: '12/18 dibagi 6 atas dan bawah menjadi 2/3. Nilainya tidak berubah.',
+    text: 'Menyederhanakan 12/18 artinya apa?',
+    correct: 'bagi atas dan bawah dengan angka sama',
+    wrong: [W('kurangi atas dan bawah', 'subtract_instead_divide'), W('bagi angka atasnya saja', 'simplify_one_side'), W('balik atas dan bawah', 'fraction_flip')],
+    why: '12/18 dibagi 6 atas dan bawah jadi 2/3. Nilainya tetap.',
   },
   13: {
-    text: 'Apa arti dari 75%?',
+    text: 'Apa arti 75%?',
     correct: '75 dari 100 bagian',
     wrong: [W('75 dari 1000 bagian', 'percent_off_by_one'), W('75 dibagi 1000', 'percent_off_by_one'), W('75 dikali 100', 'percent_off_by_one')],
     why: 'Persen artinya per seratus. 75% = 75/100 = 0,75.',
   },
   14: {
-    text: 'Apa arti dari 25% dari 80?',
-    correct: '80 dibagi 4, karena 25% itu seperempat',
+    text: 'Apa arti 25% dari 80?',
+    correct: '80 dibagi 4',
     wrong: [W('80 dibagi 25', 'percent_off_by_one'), W('80 dikali 25', 'percent_off_by_one'), W('25 dibagi 80', 'invert_fraction')],
-    why: '25% = 1/4. Jadi 80 : 4 = 20.',
+    why: '25% sama dengan 1/4. Jadi 80 : 4 = 20.',
   },
   15: {
-    text: 'Apa arti dari 0,3?',
-    correct: '3 persepuluh, sama dengan 3/10',
+    text: 'Apa arti 0,3?',
+    correct: '3 persepuluh',
     wrong: [W('3 perseratus', 'decimal_place'), W('3 perseribu', 'decimal_place'), W('30 persepuluh', 'decimal_place')],
-    why: 'Satu angka di belakang koma berarti persepuluhan. 0,3 = 3/10.',
+    why: 'Satu angka di belakang koma artinya persepuluhan. 0,3 = 3/10.',
   },
   16: {
-    text: 'Bagaimana cara membulatkan 3,47 ke persepuluhan terdekat?',
-    correct: 'lihat angka perseratusnya, kalau 5 atau lebih dibulatkan ke atas',
+    text: 'Cara membulatkan 3,47 ke persepuluhan terdekat?',
+    correct: 'lihat angka perseratusnya, 5 ke atas naik',
     wrong: [W('ambil angka depannya saja', 'not_rounded'), W('selalu dibulatkan ke atas', 'round_up_always'), W('buang semua angka di belakang koma', 'wrong_place')],
-    why: 'Angka perseratusnya 7, jadi dibulatkan ke atas menjadi 3,5.',
+    why: 'Angka perseratusnya 7, jadi dibulatkan naik jadi 3,5.',
   },
   17: {
-    text: 'Apa bedanya faktor dan kelipatan?',
-    correct: 'faktor membagi habis suatu bilangan, kelipatan adalah hasil kali bilangan itu',
-    wrong: [W('sama saja', 'factor_multiple_confusion'), W('faktor selalu lebih besar dari kelipatan', 'factor_multiple_confusion'), W('kelipatan selalu bilangan prima', 'factor_multiple_confusion')],
-    why: 'Faktor dari 12: 1, 2, 3, 4, 6, 12. Kelipatan 12: 12, 24, 36, 48.',
+    text: 'Faktor dan kelipatan bedanya apa?',
+    correct: 'faktor membagi habis, kelipatan hasil kali',
+    wrong: [W('sama saja', 'factor_multiple_confusion'), W('faktor selalu lebih besar', 'factor_multiple_confusion'), W('kelipatan selalu prima', 'factor_multiple_confusion')],
+    why: 'Faktor 12: 1, 2, 3, 4, 6, 12. Kelipatan 12: 12, 24, 36, 48.',
   },
   18: {
     text: 'Apa itu bilangan prima?',
-    correct: 'bilangan yang hanya bisa dibagi 1 dan dirinya sendiri',
-    wrong: [W('semua bilangan ganjil', 'prime_rule_error'), W('bilangan yang bisa dibagi 2', 'prime_rule_error'), W('bilangan yang punya banyak faktor', 'prime_rule_error')],
+    correct: 'hanya bisa dibagi 1 dan dirinya',
+    wrong: [W('semua bilangan ganjil', 'prime_rule_error'), W('bilangan yang bisa dibagi 2', 'prime_rule_error'), W('bilangan yang banyak faktornya', 'prime_rule_error')],
     why: 'Contoh prima: 2, 3, 5, 7, 11. Angka 9 bukan prima karena bisa dibagi 3.',
   },
   19: {
-    text: 'Bilangan -5 dan -3, mana yang lebih kecil?',
+    text: '-5 atau -3, mana yang lebih kecil?',
     correct: '-5',
     wrong: [W('-3', 'negative_order_error'), W('sama besar', 'negative_order_error')],
-    why: 'Pada bilangan negatif, makin jauh dari nol ke kiri makin kecil. Jadi -5 < -3.',
+    why: 'Makin jauh ke kiri dari nol makin kecil. Jadi -5 < -3.',
   },
   20: {
-    text: 'Apa arti soal 8 + ? = 15?',
-    correct: 'mencari angka yang kalau ditambah 8 hasilnya 15',
-    wrong: [W('menjumlahkan 8 dan 15', 'wrong_inverse_op'), W('mengalikan 8 dan 15', 'wrong_inverse_op'), W('mengurangi 15 dari 8', 'wrong_inverse_op')],
-    why: 'Cari dengan operasi kebalikannya: 15 - 8 = 7. Cek: 8 + 7 = 15.',
+    text: 'Apa arti 8 + ? = 15?',
+    correct: 'cari angka yang ditambah 8 jadi 15',
+    wrong: [W('jumlahkan 8 dan 15', 'wrong_inverse_op'), W('kalikan 8 dan 15', 'wrong_inverse_op'), W('kurangi 15 dari 8', 'wrong_inverse_op')],
+    why: 'Pakai operasi kebalikannya: 15 - 8 = 7. Cek: 8 + 7 = 15.',
   },
   21: {
-    text: 'Apa arti perbandingan 2 : 3?',
-    correct: 'setiap 2 bagian pertama ada 3 bagian kedua',
-    wrong: [W('2 ditambah 3', 'ratio_add'), W('2 dibagi 3 hasilnya', 'ratio_wrong_op'), W('2 lebih kecil dari 3', 'ratio_wrong_op')],
-    why: 'Perbandingan 2 : 3 berarti bagian kedua 1,5 kali bagian pertama. Kalau 4 maka 6.',
+    text: 'Apa arti 2 : 3?',
+    correct: 'tiap 2 bagian ada 3 bagian',
+    wrong: [W('2 ditambah 3', 'ratio_add'), W('2 dibagi 3', 'ratio_wrong_op'), W('2 lebih kecil dari 3', 'ratio_wrong_op')],
+    why: 'Perbandingan 2 : 3 artinya bagian kedua 1,5 kali bagian pertama. Kalau 4 maka 6.',
   },
   22: {
     text: 'Apa arti 1 km = 1000 m?',
-    correct: 'ubah km ke m dengan dikali 1000',
-    wrong: [W('ubah km ke m dengan dibagi 1000', 'conversion_wrong'), W('ubah km ke m dengan dikali 100', 'conversion_wrong'), W('ubah km ke m dengan dikali 10', 'conversion_wrong')],
-    why: 'Dari satuan besar ke satuan kecil, kalikannya. 3 km = 3000 m.',
+    correct: 'km ke m dikali 1000',
+    wrong: [W('km ke m dibagi 1000', 'conversion_wrong'), W('km ke m dikali 100', 'conversion_wrong'), W('km ke m dikali 10', 'conversion_wrong')],
+    why: 'Dari satuan besar ke kecil, kalikannya. 3 km = 3000 m.',
   },
   23: {
-    text: 'Kalau x = 4, apa arti dari 3x + 2?',
-    correct: '3 dikali 4 dulu, lalu ditambah 2',
+    text: 'Kalau x = 4, apa arti 3x + 2?',
+    correct: 'kali 3 dulu, baru tambah 2',
     wrong: [W('3 ditambah 4 ditambah 2', 'substitution_error'), W('34 ditambah 2', 'digit_concat'), W('3 ditambah 4 dikali 2', 'order_ops')],
     why: '3x artinya 3 kali x. Jadi 3 x 4 = 12, lalu 12 + 2 = 14.',
   },
   24: {
-    text: 'Rumus luas persegi panjang adalah panjang x lebar. Apa artinya?',
+    text: 'Luas persegi panjang = panjang x lebar. Artinya?',
     correct: 'panjang dikali lebar',
-    wrong: [W('panjang ditambah lebar', 'sum_instead_of_product'), W('2 dikali (panjang ditambah lebar)', 'perimeter_confusion'), W('panjang dikali lebar lalu dibagi 2', 'triangle_formula_confusion')],
-    why: 'Luas persegi panjang = panjang x lebar. Panjang 5 dan lebar 3 berarti 15.',
+    wrong: [W('panjang ditambah lebar', 'sum_instead_of_product'), W('2 kali (panjang + lebar)', 'perimeter_confusion'), W('panjang kali lebar bagi 2', 'triangle_formula_confusion')],
+    why: 'Luas persegi panjang = panjang x lebar. Panjang 5 dan lebar 3 jadi 15.',
   },
 };
 
@@ -840,7 +840,7 @@ const MEANING = {
 
 const firstStep = {
   6: () => {
-    const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+    const a = ri(2, 9), b = ri(2, 5), c = ri(2, 5);
     return base(`Pada soal ${a} + ${b} x ${c}, mana yang dikerjakan lebih dulu?`, `${b} x ${c}`, [
       d(`${a} + ${b}`, 'order_ops'),
       d('dari kiri ke kanan', 'order_ops'),
@@ -848,7 +848,7 @@ const firstStep = {
     ], `Kali dikerjakan sebelum tambah. Jadi ${b} x ${c} = ${b * c} dulu, lalu ${a} + ${b * c}.`, 2);
   },
   7: () => {
-    const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+    const a = ri(2, 9), b = ri(2, 6), c = ri(2, 5);
     return base(`Pada soal (${a} + ${b}) x ${c}, mana yang dikerjakan lebih dulu?`, `${a} + ${b} di dalam kurung`, [
       d(`${a} x ${c}`, 'bracket_ignored'),
       d('dari kiri ke kanan', 'order_ops'),
@@ -856,7 +856,7 @@ const firstStep = {
     ], `Isi kurung selalu lebih dulu: ${a} + ${b} = ${a + b}, lalu dikali ${c}.`, 2);
   },
   8: () => {
-    const a = ri(3, 12);
+    const a = ri(3, 9);
     return base(`Untuk menghitung ${a}${SUP[2]}, langkah pertama apa?`, `${a} x ${a}`, [
       d(`${a} x 2`, 'exponent_base_error'),
       d(`${a} + ${a}`, 'exponent_base_error'),
@@ -864,7 +864,7 @@ const firstStep = {
     ], `${a}${SUP[2]} artinya ${a} dikali dirinya sendiri, jadi ${a} x ${a} = ${a * a}.`, 3);
   },
   23: () => {
-    const x = ri(2, 9);
+    const x = ri(2, 6);
     return base(`Kalau x = ${x}, langkah pertama untuk menghitung 3x + 2 apa?`, `ganti x dengan ${x}`, [
       d('kalikan 3 dengan 2', 'order_ops'),
       d('jumlahkan 3 dan 2', 'substitution_error'),
@@ -872,7 +872,7 @@ const firstStep = {
     ], `Ganti dulu x dengan ${x}: 3 x ${x} = ${3 * x}, lalu ${3 * x} + 2 = ${3 * x + 2}.`, 3);
   },
   24: () => {
-    const p = ri(4, 15), l = ri(3, 12);
+    const p = ri(4, 12), l = ri(3, 9);
     return base(`Sisi persegi panjang ${p} cm dan ${l} cm. Untuk menghitung luasnya, langkah pertama apa?`, `${p} x ${l}`, [
       d(`${p} + ${l}`, 'sum_instead_of_product'),
       d(`2 x ${p}`, 'perimeter_confusion'),
@@ -895,7 +895,7 @@ const mistake = {
     };
   },
   6: () => {
-    const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+    const a = ri(2, 9), b = ri(2, 5), c = ri(2, 5);
     return {
       lines: [`${a} + ${b} x ${c} = ${(a + b) * c}`, `${a} + ${b} x ${c} = ${a + b * c}`, `${b} x ${c} = ${b * c}`],
       wrongIndex: 0,
@@ -904,7 +904,7 @@ const mistake = {
     };
   },
   7: () => {
-    const a = ri(2, 12), b = ri(2, 9), c = ri(2, 9);
+    const a = ri(2, 9), b = ri(2, 6), c = ri(2, 5);
     return {
       lines: [`(${a} + ${b}) x ${c} = ${a + b * c}`, `(${a} + ${b}) x ${c} = ${(a + b) * c}`, `${a} + ${b} = ${a + b}`],
       wrongIndex: 0,
@@ -913,7 +913,7 @@ const mistake = {
     };
   },
   8: () => {
-    const a = ri(3, 12);
+    const a = ri(3, 9);
     return {
       lines: [`${a}${SUP[2]} = ${a * 2}`, `${a}${SUP[2]} = ${a * a}`, `${a} x ${a} = ${a * a}`],
       wrongIndex: 0,
@@ -922,7 +922,7 @@ const mistake = {
     };
   },
   10: () => {
-    const den = ri(4, 10);
+    const den = ri(4, 8);
     const x = ri(1, den - 2);
     const y = ri(1, den - x - 1);
     const s = simplify(x + y, den);
@@ -935,7 +935,7 @@ const mistake = {
   },
   12: () => {
     const pair = pick([[1, 2], [2, 3], [3, 4], [1, 3], [2, 5], [3, 5]]);
-    const k = ri(2, 6);
+    const k = ri(2, 5);
     const n = pair[0] * k, den = pair[1] * k;
     return {
       lines: [`${n}/${den} = ${pair[0]}/${den}`, `${n}/${den} = ${frac(pair[0], pair[1])}`, `${n} : ${k} = ${pair[0]} dan ${den} : ${k} = ${pair[1]}`],
@@ -945,7 +945,7 @@ const mistake = {
     };
   },
   13: () => {
-    const den = pick([2, 4, 5, 10, 20, 25]);
+    const den = pick([2, 4, 5, 10, 20]);
     const num = ri(1, den - 1);
     const pct = (num * 100) / den;
     return {
@@ -967,7 +967,7 @@ const mistake = {
     };
   },
   15: () => {
-    const A = ri(11, 99), B = ri(105, 995);
+    const A = ri(11, 39), B = ri(105, 395);
     const ans = (A * 10 + B) / 100;
     return {
       lines: [`${fmt(A / 10)} + ${fmt(B / 100)} = ${fmt((A + B) / 100)}`, `${fmt(A / 10)} + ${fmt(B / 100)} = ${fmt(ans)}`, `${fmt(A / 10)} = ${A}/10 dan ${fmt(B / 100)} = ${B}/100`],
@@ -977,7 +977,7 @@ const mistake = {
     };
   },
   16: () => {
-    const w = ri(2, 40), t = ri(1, 9), h = ri(5, 9);
+    const w = ri(2, 20), t = ri(1, 9), h = ri(5, 9);
     const x = w + t / 10 + h / 100;
     const up = w + (t + 1) / 10;
     return {
@@ -998,7 +998,7 @@ const mistake = {
   },
   22: () => {
     const U = pick([['km', 'm', 1000], ['m', 'cm', 100], ['kg', 'g', 1000], ['jam', 'menit', 60]]);
-    const a = ri(2, 12);
+    const a = ri(2, 6);
     const f = U[2];
     return {
       lines: [`${a} ${U[0]} = ${a * f / 10} ${U[1]}`, `${a} ${U[0]} = ${a * f} ${U[1]}`, `1 ${U[0]} = ${f} ${U[1]}`],
@@ -1008,7 +1008,7 @@ const mistake = {
     };
   },
   23: () => {
-    const x = ri(2, 9);
+    const x = ri(2, 6);
     return {
       lines: [`3x + 2 = 3 + ${x} + 2 = ${3 + x + 2}`, `3x + 2 = 3 x ${x} + 2 = ${3 * x + 2}`, `3 x ${x} = ${3 * x}`],
       wrongIndex: 0,
@@ -1017,7 +1017,7 @@ const mistake = {
     };
   },
   24: () => {
-    const p = ri(4, 15), l = ri(3, 12);
+    const p = ri(4, 12), l = ri(3, 9);
     return {
       lines: [`Luas = ${p} + ${l} = ${p + l}`, `Luas = ${p} x ${l} = ${p * l}`, `Luas persegi panjang = panjang x lebar`],
       wrongIndex: 0,

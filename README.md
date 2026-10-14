@@ -49,7 +49,7 @@ Three suites, no test framework, no dependencies:
   option in a changing position, error tags on every wrong option, and no
   English decimal point. It also recomputes the right answer from the question
   text for the topics where that is possible by machine.
-- `tests/run-session.mjs` checks a diagnostic session has 48 questions (2 per
+- `tests/run-session.mjs` checks a diagnostic session has 24 questions (1 per
   topic), no repeated question, at least 20 percent of questions are not a plain
   calculation, all four question types appear, practice mode puts weak topics
   first, and the weak / medium / strong rule works.

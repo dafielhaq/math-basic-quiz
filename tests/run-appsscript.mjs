@@ -156,7 +156,7 @@ ok(['TRUE', 'FALSE'].includes(firstRow[12]), `Data row: Benar column is "${first
 
 const sessions = ss.getSheetByName('Sessions').table();
 ok(sessions.length === 1, `Sessions tab has ${sessions.length} rows, expected 1`);
-ok(Number(sessions[0]['Jumlah soal']) === 48, `Sessions: ${sessions[0]['Jumlah soal']} questions, expected 48`);
+ok(Number(sessions[0]['Jumlah soal']) === s1.rows.length, `Sessions: ${sessions[0]['Jumlah soal']} questions, expected ${s1.rows.length}`);
 ok(Number(sessions[0]['Benar']) === s1.summary.correct, `Sessions: ${sessions[0]['Benar']} correct, expected ${s1.summary.correct}`);
 ok(String(sessions[0]['Mode']) === 'Tes diagnostik', 'Sessions: wrong mode name');
 
@@ -169,12 +169,12 @@ ok(topics.every((t) => ['kuat', 'sedang', 'lemah'].includes(t['Status'])), 'Topi
 
 const totals = ss.getSheetByName('Totals').table();
 const totalQuestions = Number(totals.find((r) => r['Ukuran'] === 'Jumlah soal dijawab')['Nilai']);
-ok(totalQuestions === 48, `Totals: ${totalQuestions} questions, expected 48`);
+ok(totalQuestions === s1.rows.length, `Totals: ${totalQuestions} questions, expected ${s1.rows.length}`);
 
 // ---------------------------------------------------------------- second session and progress
 
 res = post({ token: '140514', rows: s2.rows });
-ok(res.ok === true && res.written === 48, 'second post failed');
+ok(res.ok === true && res.written === s2.rows.length, 'second post failed');
 
 const sessions2 = ss.getSheetByName('Sessions').table();
 ok(sessions2.length === 2, `Sessions tab has ${sessions2.length} rows after two sessions`);
@@ -199,7 +199,7 @@ ok(t3['Status'] !== 'kuat', 'Topics: a topic wrong in the latest session should 
 res = post({ token: 'salah', rows: s1.rows });
 ok(res.ok === false && /token/.test(res.error), 'a wrong token must be refused');
 ok(ss.getSheetByName('Rejected').getLastRow() >= 2, 'a wrong token must be written to the Rejected tab');
-ok(ss.getSheetByName('Data').getLastRow() === 2 * 48 + 1, 'a wrong token must not add rows to the Data tab');
+ok(ss.getSheetByName('Data').getLastRow() === 2 * s1.rows.length + 1, 'a wrong token must not add rows to the Data tab');
 
 const badRows = s1.rows.map((r) => ({ ...r, nickname: 'orang lain' }));
 res = post({ token: '140514', rows: badRows });
