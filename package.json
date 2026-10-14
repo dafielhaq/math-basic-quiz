@@ -1,0 +1,11 @@
+{
+  "name": "math-basic-quiz",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Latihan matematika dasar untuk kelas 7. No build step.",
+  "scripts": {
+    "test": "node tests/run-generators.mjs 1000 && node tests/run-session.mjs && node tests/run-appsscript.mjs",
+    "serve": "python -m http.server 8765"
+  }
+}
