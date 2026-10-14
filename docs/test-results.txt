@@ -1,78 +1,75 @@
-Results of the automated checks, recorded after the last code change (node v26.7.0).
-Run them again with: npm test
-
 
 Runs per topic and type: 1000
 
 topic                             type          opts answer spread  distinct Q auto-check
 ------------------------------------------------------------------------------------------------
-1. Tabel perkalian                direct        4    24-27%         81         100%
-1. Tabel perkalian                meaning       4    24-26%         1          -
-2. Pembagian dasar                direct        4    24-26%         72         100%
-2. Pembagian dasar                meaning       4    22-28%         1          -
-3. Tambah dan kurang dua angka    direct        4    24-27%         930        100%
-3. Tambah dan kurang dua angka    meaning       4    23-27%         1          -
-4. Kali 10, 100, 1000             direct        4    23-26%         282        100%
-4. Kali 10, 100, 1000             meaning       4    24-26%         1          -
-5. Bilangan negatif               direct        4    24-26%         375        100%
-5. Bilangan negatif               meaning       4    23-27%         1          -
-5. Bilangan negatif               find_mistake  3    31-38%         1          line 100%
-6. Urutan operasi                 direct        4    23-27%         728        100%
-6. Urutan operasi                 meaning       4    22-28%         1          -
-6. Urutan operasi                 first_step    4    23-27%         538        -
-6. Urutan operasi                 find_mistake  3    32-36%         1          line 100%
-7. Tanda kurung                   direct        4    24-26%         695        100%
-7. Tanda kurung                   meaning       4    23-28%         1          -
-7. Tanda kurung                   first_step    4    23-27%         544        -
-7. Tanda kurung                   find_mistake  3    33-35%         1          line 100%
-8. Pangkat                        direct        4    21-27%         90         100%
-8. Pangkat                        meaning       4    23-28%         1          -
-8. Pangkat                        first_step    4    23-28%         10         -
-8. Pangkat                        find_mistake  3    32-34%         1          line 100%
-9. Akar kuadrat                   direct        4    22-29%         13         100%
-9. Akar kuadrat                   meaning       4    24-26%         1          -
-10. Pecahan sederhana             direct        4    23-26%         106        100%
-10. Pecahan sederhana             meaning       4    24-27%         1          -
-10. Pecahan sederhana             find_mistake  3    33-34%         1          line 100%
-11. Pecahan dari suatu bilangan   direct        4    12-30%         192        100%
-11. Pecahan dari suatu bilangan   meaning       4    24-27%         1          -
-12. Menyederhanakan pecahan       direct        4    22-27%         60         100%
+1. Tabel perkalian                direct        4    21-30%         81         100%
+1. Tabel perkalian                meaning       4    23-27%         1          -
+2. Pembagian dasar                direct        4    23-27%         72         100%
+2. Pembagian dasar                meaning       4    24-26%         1          -
+3. Tambah dan kurang dua angka    direct        4    22-27%         918        100%
+3. Tambah dan kurang dua angka    meaning       4    23-28%         1          -
+4. Kali 10, 100, 1000             direct        4    23-26%         280        100%
+4. Kali 10, 100, 1000             meaning       4    23-26%         1          -
+5. Bilangan negatif               direct        4    23-27%         356        100%
+5. Bilangan negatif               meaning       4    24-26%         1          -
+5. Bilangan negatif               find_mistake  3    30-36%         1          line 100%
+6. Urutan operasi                 direct        4    23-26%         734        100%
+6. Urutan operasi                 meaning       4    24-27%         1          -
+6. Urutan operasi                 first_step    4    24-26%         530        -
+6. Urutan operasi                 find_mistake  3    33-34%         1          line 100%
+7. Tanda kurung                   direct        4    23-28%         699        100%
+7. Tanda kurung                   meaning       4    24-27%         1          -
+7. Tanda kurung                   first_step    4    21-28%         545        -
+7. Tanda kurung                   find_mistake  3    31-36%         1          line 100%
+8. Pangkat                        direct        4    19-29%         91         100%
+8. Pangkat                        meaning       4    23-26%         1          -
+8. Pangkat                        first_step    4    24-27%         10         -
+8. Pangkat                        find_mistake  3    32-35%         1          line 100%
+9. Akar kuadrat                   direct        4    24-27%         13         100%
+9. Akar kuadrat                   meaning       4    23-26%         1          -
+10. Pecahan sederhana             direct        4    23-27%         107        100%
+10. Pecahan sederhana             meaning       4    22-26%         1          -
+10. Pecahan sederhana             find_mistake  3    32-34%         1          line 100%
+11. Pecahan dari suatu bilangan   direct        4    12-31%         195        100%
+11. Pecahan dari suatu bilangan   meaning       4    23-27%         1          -
+12. Menyederhanakan pecahan       direct        4    24-26%         60         100%
 12. Menyederhanakan pecahan       meaning       4    24-27%         1          -
 12. Menyederhanakan pecahan       find_mistake  3    32-35%         1          line 100%
-13. Pecahan, desimal, persen      direct        4    23-27%         99         100%
-13. Pecahan, desimal, persen      meaning       4    24-27%         1          -
-13. Pecahan, desimal, persen      find_mistake  3    33-34%         1          line 100%
-14. Persen dari suatu bilangan    direct        4    20-29%         83         100%
-14. Persen dari suatu bilangan    meaning       4    24-26%         1          -
-14. Persen dari suatu bilangan    find_mistake  3    33-34%         1          line 100%
-15. Desimal                       direct        4    24-27%         994        100%
-15. Desimal                       meaning       4    24-26%         1          -
-15. Desimal                       find_mistake  3    31-35%         1          line 100%
-16. Pembulatan dan taksiran       direct        4    20-28%         861        100%
-16. Pembulatan dan taksiran       meaning       4    24-27%         1          -
-16. Pembulatan dan taksiran       find_mistake  3    31-36%         1          line 100%
-17. Genap, ganjil, faktor, kelipatandirect        4    24-27%         18         100%
-17. Genap, ganjil, faktor, kelipatanmeaning       4    24-26%         1          -
-18. Bilangan prima                direct        4    24-26%         2          100%
-18. Bilangan prima                meaning       4    24-26%         1          -
-19. Membandingkan bilangan        direct        4    8-42%          547        100%
-19. Membandingkan bilangan        meaning       3    32-35%         1          -
-20. Bilangan yang hilang          direct        4    24-26%         334        100%
-20. Bilangan yang hilang          meaning       4    24-25%         1          -
-20. Bilangan yang hilang          find_mistake  3    32-35%         1          line 0%
-21. Perbandingan sederhana        direct        4    24-26%         219        100%
-21. Perbandingan sederhana        meaning       4    23-29%         1          -
+13. Pecahan, desimal, persen      direct        4    22-27%         98         100%
+13. Pecahan, desimal, persen      meaning       4    23-27%         1          -
+13. Pecahan, desimal, persen      find_mistake  3    30-35%         1          line 100%
+14. Persen dari suatu bilangan    direct        4    20-28%         83         100%
+14. Persen dari suatu bilangan    meaning       4    22-29%         1          -
+14. Persen dari suatu bilangan    find_mistake  3    33-35%         1          line 100%
+15. Desimal                       direct        4    23-26%         994        100%
+15. Desimal                       meaning       4    25-25%         1          -
+15. Desimal                       find_mistake  3    32-35%         1          line 100%
+16. Pembulatan dan taksiran       direct        4    21-27%         867        100%
+16. Pembulatan dan taksiran       meaning       4    21-28%         1          -
+16. Pembulatan dan taksiran       find_mistake  3    30-36%         1          line 100%
+17. Genap, ganjil, faktor, kelipatandirect        4    22-29%         18         100%
+17. Genap, ganjil, faktor, kelipatanmeaning       4    23-27%         1          -
+18. Bilangan prima                direct        4    23-27%         2          100%
+18. Bilangan prima                meaning       4    24-27%         1          -
+19. Membandingkan bilangan        direct        4    8-42%          562        100%
+19. Membandingkan bilangan        meaning       3    31-36%         1          -
+20. Bilangan yang hilang          direct        4    24-27%         327        100%
+20. Bilangan yang hilang          meaning       4    23-27%         1          -
+20. Bilangan yang hilang          find_mistake  3    33-34%         1          line 0%
+21. Perbandingan sederhana        direct        4    23-26%         217        100%
+21. Perbandingan sederhana        meaning       4    24-26%         1          -
 22. Konversi satuan               direct        4    24-26%         77         100%
-22. Konversi satuan               meaning       4    23-26%         1          -
-22. Konversi satuan               find_mistake  3    31-36%         1          line 100%
-23. Substitusi                    direct        4    23-27%         305        100%
+22. Konversi satuan               meaning       4    23-27%         1          -
+22. Konversi satuan               find_mistake  3    32-35%         1          line 100%
+23. Substitusi                    direct        4    24-28%         301        100%
 23. Substitusi                    meaning       4    24-26%         1          -
-23. Substitusi                    first_step    4    24-26%         8          -
+23. Substitusi                    first_step    4    24-27%         8          -
 23. Substitusi                    find_mistake  3    32-35%         1          line 0%
-24. Evaluasi rumus                direct        4    24-25%         304        100%
-24. Evaluasi rumus                meaning       4    24-26%         1          -
-24. Evaluasi rumus                first_step    4    23-27%         120        -
-24. Evaluasi rumus                find_mistake  3    30-38%         1          line 0%
+24. Evaluasi rumus                direct        4    23-27%         314        100%
+24. Evaluasi rumus                meaning       4    23-29%         1          -
+24. Evaluasi rumus                first_step    4    22-26%         120        -
+24. Evaluasi rumus                find_mistake  3    31-37%         1          line 0%
 
 total questions built: 67000
 

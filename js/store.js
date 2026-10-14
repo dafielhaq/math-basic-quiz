@@ -94,11 +94,14 @@ export function queueRows(rows) {
 }
 
 let sending = false;
+let sendingSince = 0;
 const MAX_AGE_MS = 7 * 24 * 3600 * 1000;   // rows older than a week are dropped
+const SEND_TIMEOUT_MS = 30000;             // a stuck request must not block later sends
 
 // Send everything waiting. Returns a small status object, never throws.
 export async function flushQueue() {
-  if (sending) return null;
+  // a request that hangs must not block the next try for the rest of the session
+  if (sending && Date.now() - sendingSince < SEND_TIMEOUT_MS) return null;
   let queue = read(KEY_QUEUE, []);
   if (!queue.length) return { sent: 0, left: 0 };
   const fresh = queue.filter((r) => Date.now() - Date.parse(r.timestamp) < MAX_AGE_MS);
@@ -110,6 +113,9 @@ export async function flushQueue() {
   if (!CONFIG.ENDPOINT) return { sent: 0, left: queue.length, error: 'alamat endpoint belum diisi' };
 
   sending = true;
+  sendingSince = Date.now();
+  const stop = new AbortController();
+  const timer = setTimeout(() => stop.abort(), SEND_TIMEOUT_MS);
   try {
     const body = JSON.stringify({ token: CONFIG.TOKEN, rows: queue });
     // text/plain keeps the request simple, so the browser sends no preflight
@@ -117,6 +123,7 @@ export async function flushQueue() {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body,
+      signal: stop.signal,
     });
     const text = await res.text();
     let data = null;
@@ -133,6 +140,7 @@ export async function flushQueue() {
   } catch (e) {
     return { sent: 0, left: queue.length, error: String((e && e.message) || e) };
   } finally {
+    clearTimeout(timer);
     sending = false;
   }
 }

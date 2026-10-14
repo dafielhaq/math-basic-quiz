@@ -106,6 +106,8 @@ async function flush(showNote = true) {
   else if (result && result.sent > 0) { if (showNote) note(`${result.sent} jawaban terkirim${result.deferred ? `, ${result.deferred} ditunda` : ''}.`); }
   else if (showNote) note(result && result.left ? 'Masih ada yang menunggu.' : 'Tidak ada yang perlu dikirim.');
   updateFooter();
+  // refresh the "waiting to send" line on the result screen once the send is done
+  if (state.screen === 'result' && result && !result.error && result.left === 0) render(false);
 }
 
 document.addEventListener('click', (ev) => {

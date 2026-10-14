@@ -9,8 +9,7 @@ export const CONFIG = {
   TOKEN: '140514',
 
   // Google Apps Script web app URL. Fill this in after you deploy the script.
-  // Example: 'https://script.google.com/macros/s/AKfy..../exec'
-  ENDPOINT: '',
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbxSd71FiBLMdjYvsYXtkUetiWMrzU7ttCJVzz2lv9AV3cS4yt9cQpO0LGDIdPYhCRgr/exec',
 
   // No countdown timer is shown. These values are only used to flag answers.
   SLOW_MS: 10000,      // a correct answer slower than this marks the topic as "pelan"

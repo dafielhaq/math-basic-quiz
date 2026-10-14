@@ -2,7 +2,7 @@
 // Service worker: makes the app work without internet.
 // Bump VERSION when you upload a new version of the app, so phones pick it up.
 
-const VERSION = 'v3';
+const VERSION = 'v6';
 const CACHE = `mq-${VERSION}`;
 
 const FILES = [
@@ -26,7 +26,9 @@ const FILES = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => Promise.all(FILES.map((f) => cache.add(f).catch(() => {}))))
+      // cache: 'reload' skips the browser's own copy of a file, so a new version
+      // of the app is really picked up instead of the old one from the http cache
+      .then((cache) => Promise.all(FILES.map((f) => cache.add(new Request(f, { cache: 'reload' })).catch(() => {}))))
       .then(() => self.skipWaiting()),
   );
 });
