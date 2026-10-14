@@ -73,7 +73,7 @@ Repo: [dafielhaq/math-basic-quiz](https://github.com/dafielhaq/math-basic-quiz)
 
 Cek dengan membukanya di HP. Kalau muncul halaman "Hai, Zaim", berarti sudah berhasil.
 
-Kalau saya mengirim versi baru ke GitHub, kamu tidak perlu klik apa pun lagi. Aplikasi akan memperbarui dirinya sendiri, paling lambat saat dibuka ulang.
+Kalau saya mengirim versi baru ke GitHub, kamu tidak perlu klik apa pun lagi. Aplikasi akan memperbarui dirinya sendiri. Perlu waktu sekitar 10 menit setelah saya mengirim, atau langsung saat aplikasi ditutup lalu dibuka lagi.
 
 ---
 
