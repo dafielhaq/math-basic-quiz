@@ -10,7 +10,8 @@ Isi panduan:
 4. Memasang aplikasi di HP
 5. Cara membaca tab di Sheet
 6. Mengubah token dan daftar nama
-7. Kalau ada yang tidak jalan
+7. Halaman ringkasan untuk tutor
+8. Kalau ada yang tidak jalan
 
 ---
 
@@ -53,6 +54,10 @@ Script ini yang menerima jawaban dari HP dan mengisi tab-tab ringkasan.
 Kirim URL itu (yang berakhiran `/exec`) ke saya, atau tempel sendiri di `js/config.js` pada baris `ENDPOINT`.
 
 Cara mengetes scriptnya: buka URL `/exec` itu di browser. Kalau muncul tulisan `{"ok":true,...}` berarti script sudah jalan.
+
+Kalau tulisan itu berbunyi "Add the tutor key to see the summary", artinya script juga sudah jalan, hanya halaman ringkasan yang menunggu kunci. Itu normal.
+
+(Kalau ingin mengecek kesehatan script dengan pasti, tambahkan `?action=health` di belakang alamatnya.)
 
 **Kalau nanti mengubah isi script, jangan klik "Terapkan baru" lagi.**
 
@@ -123,10 +128,10 @@ Aplikasi hanya mengizinkan 200 baris masuk per jam. Kalau lebih, sisanya **tidak
 Keduanya ada di dua tempat yang harus cocok.
 
 **Token** ada di:
-- `apps-script/Code.gs` baris ke-12: `const TOKEN = '140514';`
+- `apps-script/Code.gs` baris ke-13: `const TOKEN = '140514';`
 - `js/config.js`: `TOKEN: '140514',`
 
-**Daftar nama** hanya ada di script, baris ke-13: `const ALLOWED = ['Zaim'];`
+**Daftar nama** hanya ada di script, baris ke-14: `const ALLOWED = ['Zaim'];`
 Tambahkan nama lain seperti ini: `const ALLOWED = ['Zaim', 'Adik'];`
 
 Langkah mengubah:
@@ -139,7 +144,52 @@ Ganti token kalau tab **Rejected** bertambah banyak sekali, itu tanda tokennya s
 
 ---
 
-## 7. Kalau ada yang tidak jalan
+## 7. Halaman ringkasan untuk tutor
+
+Selain tab-tab di Sheet, ada satu halaman yang khusus untukmu. Isinya angka-angka yang sama, tapi disusun supaya cepat dibaca.
+
+Yang tampil di halaman itu:
+
+- Empat angka besar: jumlah sesi, soal dijawab, jumlah benar, dan ketepatan keseluruhan.
+- Grafik ketepatan setiap sesi. Naik berarti cara belajarnya berhasil.
+- Peta 24 topik, diurutkan dari yang paling perlu dilatih. Warnanya sama dengan yang dilihat anakmu di HP: merah lemah, kuning sedang, hijau kuat, dan tanda "pelan" untuk yang sudah benar tapi lambat.
+- Klik satu topik untuk melihat riwayat topik itu per sesi dan kesalahan yang paling sering.
+- Kartu terakhir: tiga topik paling perlu dilatih dan tiga kesalahan yang paling sering muncul, ditulis dengan kata biasa.
+
+Halaman ini hanya bisa dibuka olehmu. Angkanya dihitung dari tab Data yang sama, jadi tidak mungkin berbeda dengan Sheet.
+
+### Cara mengaktifkannya (sekali saja)
+
+Perlu satu penerapan tambahan. Yang lama tidak diubah.
+
+1. Buka Sheet, lalu menu **Ekstensi**, lalu **Apps Script**.
+2. Tempel ulang seluruh isi `Code.gs` dari folder proyek (versi terbaru), lalu simpan.
+3. Klik **Terapkan** lalu **Kelola penerapan**, klik ikon pensil pada penerapan yang sudah ada, pilih **Versi baru**, lalu **Terapkan**. Ini yang membuat aplikasi di HP tetap bisa mengirim data.
+4. Klik **Terapkan** lagi, lalu **Terapkan baru**.
+5. Klik ikon roda gigi, pilih **Aplikasi web**.
+6. Atur seperti ini:
+   - Keterangan: `ringkasan tutor`
+   - Jalankan sebagai: **Saya**
+   - Siapa yang punya akses: **Hanya saya**
+7. Klik **Terapkan**, lalu salin URL yang berakhiran `/exec`.
+8. Tempel di browser alamat itu, lalu tambahkan `?tutor=zaim-ringkasan` di belakangnya. Contoh:
+
+   `https://script.google.com/macros/s/AKfy..../exec?tutor=zaim-ringkasan`
+
+9. Simpan alamat itu sebagai penanda (bookmark) di HP dan di komputer.
+
+Sejak saat itu, membuka penanda itu akan menampilkan ringkasan terbaru. Setiap kali kamu membukanya, angkanya dihitung ulang, jadi selalu yang terakhir.
+
+### Mengubah kunci halaman
+
+Kunci `zaim-ringkasan` ada di baris ke-42 `Code.gs`: `const DASHBOARD_KEY = 'zaim-ringkasan';`
+Ganti isinya, lalu **Terapkan** lalu **Kelola penerapan** lalu pensil lalu **Versi baru** lalu **Terapkan**. Jangan lupa penanda di HP juga diperbarui.
+
+Penerapan "Hanya saya" itu yang menahan orang lain. Kunci itu hanya lapisan kedua. Kalau kamu memakai URL penerapan yang publik, halamannya tetap bisa dibuka siapa pun yang tahu kuncinya, jadi pakai penerapan yang "Hanya saya".
+
+---
+
+## 8. Kalau ada yang tidak jalan
 
 | Gejala | Penyebab dan jalan keluar |
 |---|---|
@@ -149,3 +199,7 @@ Ganti token kalau tab **Rejected** bertambah banyak sekali, itu tanda tokennya s
 | Tab **Rejected** bertambah | Ada kiriman dengan token salah atau nama di luar daftar. Cek token dan daftar nama. |
 | Ringkasan tidak berubah | Di sheet, menu **Latihan MTK** lalu **Bangun ulang ringkasan**. |
 | Aplikasi menampilkan versi lama | Tutup aplikasi sepenuhnya lalu buka lagi. |
+| Halaman ringkasan minta login terus | Itu memang benar. Halaman itu hanya untuk akunmu. Login dengan akun yang sama seperti saat membuat script. |
+| Halaman ringkasan hanya menampilkan tulisan `"ok":true` | Kunci di alamatnya salah atau hilang. Tambahkan `?tutor=zaim-ringkasan` di belakang alamat. |
+| Halaman ringkasan bilang "Belum ada data" | Belum ada jawaban yang masuk ke tab Data. Jalankan tes diagnostik dulu di aplikasi HP. |
+| Halaman ringkasan tidak berubah walau ada jawaban baru | Muat ulang halaman (tarik ke bawah). Angkanya dihitung saat halaman dibuka. |

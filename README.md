@@ -55,8 +55,25 @@ Three suites, no test framework, no dependencies:
   first, and the weak / medium / strong rule works.
 - `tests/run-appsscript.mjs` runs `apps-script/Code.gs` against a fake
   spreadsheet using rows produced by the real app code, and checks the written
-  rows, the token check, the nickname allowlist, the hourly rate limit and all
-  six summary tabs.
+  rows, the token check, the nickname allowlist, the hourly rate limit, all six
+  summary tabs, and the tutor page (served only with the right key, plain words
+  instead of mistake codes, the chart, and the topic tiles). It writes a preview
+  of the page to the temp folder so it can be looked at in a browser.
+
+## The tutor page
+
+The same script also serves one page for the tutor: totals, an accuracy chart
+per session, the 24 topics in the same colours the student sees, and a "teach
+this next" card. The numbers come from the same rows as the summary tabs, so
+the page and the sheet cannot disagree.
+
+The page is served by a second deployment of the same script, with access
+"only myself", so Google handles the login. A key in the address
+(`?tutor=...`, set in `DASHBOARD_KEY`) is a second lock. Without the key the
+endpoint answers with a short json message instead.
+
+`doGet` also answers `?action=health` and `?action=metrics` (the second one
+needs the key).
 
 ## How the data flows
 

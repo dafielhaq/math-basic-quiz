@@ -4,6 +4,8 @@
 // Run with: node tests/run-appsscript.mjs
 
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { buildSession, answerCurrent, scoreSession } from '../js/quiz.js';
 import { rowFor } from '../js/store.js';
 import { TOPICS } from '../js/topics.js';
@@ -84,14 +86,20 @@ const source = fs.readFileSync('apps-script/Code.gs', 'utf8');
 // Safe: the source is our own file in this project, not user input. Loading it
 // this way lets the Apps Script code run in Node against the fake spreadsheet.
 const api = new Function(
-  'SpreadsheetApp', 'Charts', 'LockService', 'ContentService',
-  `${source}\n; return { doPost: doPost, doGet: doGet, rebuildMetrics: rebuildMetrics, TOKEN: TOKEN };`,
+  'SpreadsheetApp', 'Charts', 'LockService', 'ContentService', 'HtmlService',
+  `${source}\n; return { doPost: doPost, doGet: doGet, rebuildMetrics: rebuildMetrics, TOKEN: TOKEN, KEY: DASHBOARD_KEY };`,
 )(
   { getActiveSpreadsheet: () => ss },
   { ChartType: { LINE: 'LINE' } },
   { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   { MimeType: { JSON: 'json' }, createTextOutput: (t) => ({ text: t, setMimeType() { return this; } }) },
+  { createHtmlOutput: (h) => ({ text: h, setTitle() { return this; }, addMetaTag() { return this; } }) },
 );
+
+const get = (params) => {
+  const res = api.doGet({ parameter: params || {} });
+  return { text: res.text, isHtml: /^<!doctype html>/i.test(res.text) };
+};
 
 const post = (payload) => {
   const res = api.doPost({ postData: { contents: JSON.stringify(payload) } });
@@ -101,6 +109,18 @@ const post = (payload) => {
 
 let failures = [];
 const ok = (cond, msg) => { if (!cond) failures.push(msg); };
+
+// ---------------------------------------------------------------- the tutor page, before any data
+
+{
+  const empty = get({ tutor: api.KEY });
+  ok(empty.isHtml, 'the tutor page must be html when the key is right');
+  ok(empty.text.includes('Belum ada data'), 'an empty sheet must show the empty message');
+  ok(!get({}).isHtml, 'without the key no page may be served');
+  ok(!get({ tutor: api.KEY + 'x' }).isHtml, 'a wrong key must not serve the page');
+  ok(JSON.parse(get({ action: 'health' }).text).ok === true, 'the health check must still work');
+  ok(JSON.parse(get({ action: 'metrics' }).text).ok === false, 'the metrics json must need the key too');
+}
 
 // ---------------------------------------------------------------- make real rows
 
@@ -186,13 +206,70 @@ res = post({ token: '140514', rows: badRows });
 ok(res.ok === true && res.refused === badRows.length && res.written === 0, 'a nickname outside the list must be refused');
 ok(res.processed === badRows.length, 'refused rows must be counted as processed so the phone drops them');
 
+// ---------------------------------------------------------------- the tutor page with data
+
+{
+  const page = get({ tutor: api.KEY });
+  ok(page.isHtml, 'the tutor page must be html');
+  const weakName = ss.getSheetByName('Topics').table()[0]['Topik'];
+  ok(page.text.includes(weakName), `the page must list the weakest topic (${weakName})`);
+  ok(page.text.includes('<svg'), 'the page must contain the chart');
+  ok(page.text.includes('<polyline'), 'the chart must draw a line between sessions');
+  ok(page.text.includes('Ketepatan per sesi'), 'the chart title is missing');
+  ok(page.text.includes('Untuk sesi di kertas berikutnya'), 'the tutor card is missing');
+  ok(page.text.includes('<details'), 'topic details are missing');
+  ok(page.text.includes('Soal dijawab'), 'the totals row is missing');
+
+  const dataRows = ss.getSheetByName('Data').getLastRow() - 1;
+  const metrics = JSON.parse(get({ action: 'metrics', tutor: api.KEY }).text);
+  // mistake codes must be shown as plain words, never as codes
+  const topLabel = metrics.tutor.topTags[0].label;
+  ok(page.text.includes(topLabel), `the plain meaning "${topLabel}" is missing from the page`);
+  for (const t of metrics.tutor.topTags) ok(!page.text.includes(t.tag), `the page must not show the raw code ${t.tag}`);
+
+  ok(metrics.totals.sessions === 2, `metrics: ${metrics.totals.sessions} sessions, expected 2`);
+  ok(metrics.totals.questions === dataRows, `metrics: ${metrics.totals.questions} questions, the Data tab has ${dataRows} rows`);
+  ok(metrics.sessions.length === metrics.totals.sessions, 'metrics: session list length does not match');
+  ok(metrics.topics.length === 24, `metrics: ${metrics.topics.length} topics, expected 24`);
+  ok(metrics.topics[0].status === 'lemah', 'metrics: the list must start with a weak topic');
+  ok(metrics.tutor.weakest.length === 3, 'metrics: the tutor card needs three topics');
+  ok(metrics.tutor.topTags.length >= 1 && metrics.tutor.topTags[0].label.length > 3, 'metrics: mistake labels are missing');
+  ok(metrics.topics.filter((t) => t.topTag).every((t) => t.topTagLabel && t.topTagLabel !== t.topTag), 'metrics: a mistake code was not translated');
+  ok(metrics.topics[0].perSession.length >= 1, 'metrics: per session history is missing');
+
+  // write the page out so it can be looked at in a browser
+  const preview = path.join(process.env.TMPDIR || os.tmpdir(), 'dashboard-preview.html');
+  fs.writeFileSync(preview, page.text);
+  console.log(`Tutor page written to ${preview} (fake data, for looking at it in a browser)`);
+}
+
+// ---------------------------------------------------------------- a page with many sessions
+
+{
+  // short practice sessions, so the chart has enough points to be checked
+  for (let k = 0; k < 6; k++) {
+    const extra = makeRows('practice', [1, 2, 3].slice(0, k + 1));
+    const r = post({ token: '140514', rows: extra.rows });
+    ok(r.written === extra.rows.length, `many sessions: only ${r.written} of ${extra.rows.length} rows were written`);
+  }
+  const many = get({ tutor: api.KEY });
+  const dots = (many.text.match(/class="dot"/g) || []).length;
+  ok(dots === 8, `many sessions: the chart shows ${dots} points, expected 8`);
+  ok((many.text.match(/class="val"/g) || []).length >= 4, 'many sessions: the accuracy labels are missing');
+  ok(!many.text.includes('NaN'), 'many sessions: the page contains NaN');
+  ok(!many.text.includes('undefined'), 'many sessions: the page contains undefined');
+  fs.writeFileSync(path.join(process.env.TMPDIR || os.tmpdir(), 'dashboard-preview-many.html'), many.text);
+  const m = JSON.parse(get({ action: 'metrics', tutor: api.KEY }).text);
+  ok(m.sessions.length === 8, `many sessions: metrics show ${m.sessions.length} sessions, expected 8`);
+}
+
 // ---------------------------------------------------------------- rate limit
 
 const manyRows = [];
 for (let i = 0; i < 250; i++) manyRows.push({ ...s1.rows[i % s1.rows.length] });
 const before = ss.getSheetByName('Data').getLastRow();
 const alreadyThisHour = before - 1;          // every row so far was written during this test run
-const room = 200 - alreadyThisHour;
+const room = Math.max(0, 200 - alreadyThisHour);
 res = post({ token: '140514', rows: manyRows });
 ok(res.written === room, `rate limit: wrote ${res.written}, expected ${room}`);
 ok(res.deferred === 250 - room, `rate limit: deferred ${res.deferred}, expected ${250 - room}`);
@@ -201,7 +278,7 @@ ok(ss.getSheetByName('Data').getLastRow() === before + room, 'rate limit: the Da
 
 // ---------------------------------------------------------------- health check
 
-const health = JSON.parse(api.doGet().text);
+const health = JSON.parse(get({ action: 'health' }).text);
 ok(health.ok === true, 'doGet must answer ok');
 
 if (failures.length) {
