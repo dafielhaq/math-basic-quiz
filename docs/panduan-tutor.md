@@ -187,6 +187,21 @@ Ganti isinya, lalu **Terapkan** lalu **Kelola penerapan** lalu pensil lalu **Ver
 
 Penerapan "Hanya saya" itu yang menahan orang lain. Kunci itu hanya lapisan kedua. Kalau kamu memakai URL penerapan yang publik, halamannya tetap bisa dibuka siapa pun yang tahu kuncinya, jadi pakai penerapan yang "Hanya saya".
 
+### Dua penerapan, dan aturan pentingnya
+
+Sekarang ada dua penerapan dari script yang sama:
+
+1. **Penerapan aplikasi** (yang "Siapa saja"). Alamat ini yang tertulis di `ENDPOINT` pada `js/config.js`. Tugasnya hanya menerima jawaban dari HP.
+2. **Penerapan ringkasan** (yang "Hanya saya"). Alamat ini untuk halaman ringkasan. Yang bisa masuk hanya akunmu.
+
+Aturan yang tidak boleh dilanggar:
+
+- **Jangan pernah menukar alamat keduanya.** Kalau `ENDPOINT` diisi alamat penerapan "Hanya saya", aplikasi di HP tidak akan bisa mengirim data, karena Google menolaknya dengan pesan 401.
+- Kalau saya mengirim `Code.gs` baru, perbarui **kedua** penerapan dengan cara yang sama: **Terapkan** lalu **Kelola penerapan** lalu pensil lalu **Versi baru** lalu **Terapkan**. Jangan pakai "Terapkan baru", alamatnya akan berganti dan penanda di HP jadi mati.
+- Kalau salah satu penerapan masih memakai kode lama, tidak apa-apa untuk sementara. Penerapan aplikasi yang penting tetap bisa menerima jawaban dan mengisi tab-tab ringkasan.
+
+Cara mengecek mana yang mana: buka alamatnya tanpa `?tutor=`. Kalau muncul tulisan `{"ok":true,...}`, itu penerapan aplikasi. Kalau muncul halaman login Google, itu penerapan ringkasan.
+
 ---
 
 ## 8. Kalau ada yang tidak jalan
@@ -203,3 +218,4 @@ Penerapan "Hanya saya" itu yang menahan orang lain. Kunci itu hanya lapisan kedu
 | Halaman ringkasan hanya menampilkan tulisan `"ok":true` | Kunci di alamatnya salah atau hilang. Tambahkan `?tutor=zaim-ringkasan` di belakang alamat. |
 | Halaman ringkasan bilang "Belum ada data" | Belum ada jawaban yang masuk ke tab Data. Jalankan tes diagnostik dulu di aplikasi HP. |
 | Halaman ringkasan tidak berubah walau ada jawaban baru | Muat ulang halaman (tarik ke bawah). Angkanya dihitung saat halaman dibuka. |
+| Aplikasi di HP bilang "Belum bisa dikirim: HTTP 401" | Alamat `ENDPOINT` di `js/config.js` tertukar dengan alamat penerapan yang "Hanya saya". Aplikasi harus memakai alamat penerapan yang publik (yang "Siapa saja"). Kembalikan ke alamat lama. |
